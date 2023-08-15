@@ -96,7 +96,7 @@ class YoloDataset(data.Dataset):
         # plt.imshow(img)
         # plt.show()
         ''' debug '''
-        img = self.sub_mean(img, self.mean)
+        img = self.normalization(img)
         target = self.encoder(boxes, labels)
 
         return torch.Tensor(img), target
