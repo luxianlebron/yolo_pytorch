@@ -22,7 +22,7 @@ VOC_CLASSES_DICT = {c:idx for idx, c in enumerate(VOC_CLASSES)}
 
 class YoloDataset(data.Dataset):
     img_size = 448
-    def __init__(self, root_dir, train_val_test, transform) -> None:
+    def __init__(self, root_dir, train_val_test, transform=None) -> None:
         '''
             args:
                 root_dir: dataset root dir
@@ -39,7 +39,7 @@ class YoloDataset(data.Dataset):
         self.fnames = []
         self.boxes = []
         self.labels = []
-        self.mean = (123, 117, 104) # RGB
+        # self.mean = (123, 117, 104) # RGB
 
         with open(self.im_sets) as f:
             lines = f.readlines()
@@ -104,9 +104,8 @@ class YoloDataset(data.Dataset):
     def __len__(self):
         return self.num_samples
 
-    def sub_mean(self, rgb, mean):
-        mean = np.array(mean)
-        rgb = rgb - mean
+    def normalization(self, rgb):
+        rgb = rgb / 255.
         return rgb
 
     def encoder(self, boxes, labels):
