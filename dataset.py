@@ -288,8 +288,8 @@ class YoloDataset(data.Dataset):
 if __name__ == '__main__':
     root_dir = 'C:/Users/Administrator/Desktop/VOCdevkit/VOC2007'
 
-    val_dataset = YoloDataset(root_dir, 'train', None)
-    print(val_dataset[0])
+    train_dataset = YoloDataset(root_dir, 'train', None)
+    print(train_dataset[0])
 
     print('Done!')
 
