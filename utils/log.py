@@ -18,7 +18,7 @@ def create_log(log_dir,
     formatter = logging.Formatter(format, datefmt)
 
     # File Handler
-    log_file = os.path.join(log_dir, 'log.txt')
+    log_file = os.path.join(log_dir, 'log.txt').replace('\\', '/')
     fh = logging.FileHandler(log_file)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
