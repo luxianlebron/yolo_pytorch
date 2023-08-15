@@ -1,0 +1,7 @@
+opencv-python
+numpy
+pytorch
+torchvision
+random
+matplotlib
+thop

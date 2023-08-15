@@ -9,7 +9,7 @@ class YoloLoss(nn.Module):
         self.B = B
         self.l_coord = l_coord
         self.l_noobj = l_noobj
-    
+
     @staticmethod
     def compute_iou(box1, box2):
         '''Compute the intersection over union of two set of boxes, each box is [x1, y1, x2, y2].
@@ -110,4 +110,12 @@ class YoloLoss(nn.Module):
         not_contain_loss = F.mse_loss(box_pred_not_response[:,4], box_target_not_response[:,4], reduction='sum')
 
         return (self.l_coord*loc_loss + 2*contain_loss + not_contain_loss + self.l_noobj*noobj_loss + class_loss)/N
+
+
+if __name__ == '__main__':
+    pred = torch.randn(size=(1, 7, 7, 30))
+    target = torch.zeros(size=(1, 7, 7, 30))
+    yolo_loss = YoloLoss(7, 2, l_coord=5, l_noobj=0.5)
+    loss = yolo_loss(pred, target)
+    print(loss)
 
