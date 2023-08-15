@@ -94,19 +94,19 @@ if __name__ == "__main__":
         model_state_dict = torch.load(conf.pretrained_model)
         model.load_state_dict(model_state_dict)
 
-    ''' train model '''
+    ''' load dataset '''
     root_dir = r'C:/Users/Administrator/Desktop/VOCdevkit/VOC2007'
-    train_dataset = YoloDataset(root_dir, 'train')
+    train_dataset = YoloDataset(root_dir, 'test')
     val_dataset = YoloDataset(root_dir, 'val')
+    test_dataset = YoloDataset(root_dir, 'train')
+    log.info(f'train_dataset length:{len(train_dataset)}, val_dataset length:{len(val_dataset)}, test_dataset length:{len(test_dataset)}')
 
-    log.info(f'train_dataset length:{len(train_dataset)}, val_dataset length:{len(val_dataset)}')
+    ''' train model '''
     train_loader = DataLoader(train_dataset, batch_size=conf.batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=conf.batch_size, shuffle=True)
     train_yolo(conf, log, model, train_loader, val_loader, device)
 
     ''' test model '''
-    test_dataset = YoloDataset(root_dir, 'test')
-    log.info(f'test_dataset length:{len(test_dataset)}')
     test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
     test_yolo(model, log, test_loader, device)
 
