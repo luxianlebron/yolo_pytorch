@@ -99,7 +99,7 @@ class YoloDataset(data.Dataset):
         img = self.normalization(img)
         target = self.encoder(boxes, labels)
 
-        return torch.Tensor(img), target
+        return torch.Tensor(img).permute(2, 0, 1), target
 
     def __len__(self):
         return self.num_samples
@@ -120,7 +120,9 @@ class YoloDataset(data.Dataset):
         wh = (boxes[:, 2:] - boxes[:, :2]) / self.img_size # nomalization to the whole image
         cxcy = (boxes[:, 2:] + boxes[:, :2]) / 2. # x y 
         for i in range(cxcy.size(0)):
-            grid_ij = ((cxcy[i, :] / grid_size).ceil() - 1).type(torch.int32)
+            if any(boxes[i] > self.img_size): # 有些图片label有问题，ground truth bound 在图片外面了
+                continue
+            grid_ij = ((cxcy[i, :] / grid_size).floor()).type(torch.int32)
             grid_cxcy = grid_ij * (self.img_size / grid_num)
             delta_cxcy = (cxcy[i, :] - grid_cxcy) / grid_size
             target[grid_ij[1], grid_ij[0], 4] = 1 # c
