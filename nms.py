@@ -1,5 +1,4 @@
 import torch
-import numpy as np
 from loss import YoloLoss
 
 def NMS(bounding_boxes:torch.Tensor, confidence_threshold, iou_threshold):
