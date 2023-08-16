@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 from nms import NMS
 from model import YoloModel
+from dataset import VOC_CLASSES
+
 
 model_path = r''
 image_path = r'./horse.jpg'
@@ -23,7 +25,7 @@ with torch.no_grad():
     pred = model(model_in)
 
 pred_boxes = pred.squeeze(0)
-# 1 bounding box
+# translate (cx, cy, dx, dy) to (xmin, ymin, xmax, ymax)
 w1h1 = pred_boxes[:, :, 2:4] * 448.
 for grid_i in range(7):
     for grid_j in range(7):
@@ -48,6 +50,7 @@ for box in predicted_boxes:
     pt1 = [int(box[0].item()), int(box[1].item())]
     pt2 = [int(box[2].item()), int(box[3].item())]
     cv2.rectangle(img, pt1, pt2, color=(255, 0, 0), thickness=1)
+    cv2.putText(img, VOC_CLASSES[int(box[6].item())], [int(box[0].item()), int(box[1].item())-5], cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 1)
 
 figure = plt.figure(figsize=(10, 5))
 plt.imshow(img)
