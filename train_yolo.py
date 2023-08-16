@@ -1,4 +1,5 @@
 import os
+import cv2
 import numpy as np
 from datetime import datetime
 
@@ -73,7 +74,7 @@ def test_yolo(model, log, test_loader, device):
     # mMAP = 
 
     log.info(f"Test: test_loss={test_loss.item()}")
-        
+
 
 if __name__ == "__main__":
     conf = config(batch_size=256, init_lr=1e-3, epochs=500,
