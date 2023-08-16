@@ -1,4 +1,5 @@
 import torch
+import copy
 from loss import YoloLoss
 
 def NMS(bounding_boxes:torch.Tensor, confidence_threshold, iou_threshold):
@@ -29,9 +30,14 @@ def NMS(bounding_boxes:torch.Tensor, confidence_threshold, iou_threshold):
         boxes = sorted(boxes, key=(lambda x : x[4]), reverse=True)
         choiced_box = boxes.pop(0)
         predicted_boxes.append(choiced_box)
+
+        pop_index = []
         for i in range(len(boxes)):
             if YoloLoss.compute_iou(choiced_box[:4].unsqueeze(0), boxes[i][:4].unsqueeze(0)) > iou_threshold:
-                boxes.pop(i)
+                pop_index.append(i)
+
+        for i, j in enumerate(pop_index):
+            boxes.pop(j-i)
 
     return predicted_boxes
 
