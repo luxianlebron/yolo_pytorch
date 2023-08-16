@@ -21,7 +21,7 @@ def NMS(bounding_boxes:torch.Tensor, confidence_threshold, iou_threshold):
         else:
             box[:5] = box_[5:10]
 
-        box[5:] = torch.Tensor([class_prob_idx, class_prob])
+        box[5:] = torch.Tensor([class_prob, class_prob_idx])
         boxes.append(box)
 
     # 2. NMS. 以confidence为标准对bounding boxes进行排序，取出confidence最大的box
